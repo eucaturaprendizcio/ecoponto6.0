@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPonto - Painel de Autenticação</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/img/logo-ecoponto2.png">
+</head>
+
+<body>
+
+    <div class="bg-video-container">
+        <video autoplay muted loop playsinline>
+            <source src="assets/video/videoplayback.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="login-box">
+        <div class="logo-container">
+            <img src="assets/img/logo-ecoponto.png" alt="EcoPonto">
+        </div>
+
+        <div class="login-tabs">
+            <button class="tab-btn active" onclick="switchTab('corporate')">Portal Corporativo</button>
+            <button class="tab-btn" onclick="switchTab('operational')">Portal do Motorista</button>
+        </div>
+
+        <div id="corporateForm" class="form-content active">
+            <form onsubmit="handleLogin(event, 'Corporativo')">
+                <div class="input-group">
+                    <label for="corpUser">Usuário</label>
+                    <input type="text" id="corpUser" autocomplete="off" placeholder="Insira seu usuário" required>
+                </div>
+                <div class="input-group">
+                    <label for="corpPass">Senha</label>
+                    <input type="password" id="corpPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-access">Acessar</button>
+            </form>
+        </div>
+
+        <div id="operationalForm" class="form-content">
+            <form onsubmit="handleLogin(event, 'Operacional')">
+                <div class="input-group">
+                    <label for="opUnit">Acesso [Primeiro Nome + Último Nome]</label>
+                    <input type="text" id="opUnit" autocomplete="off" placeholder="JORGENOGUEIRA" required>
+                </div>
+                <div class="input-group">
+                    <label for="opKey">Matrícula</label>
+                    <input type="password" id="opKey" placeholder="9-000000" required>
+                </div>
+                <button type="submit" class="btn-access">Acessar</button>
+            </form>
+        </div>
+
+        <div class="actions">
+            <a href="#" class="btn-request" id="lnkRequest">Solicitar Novo Acesso</a>
+        </div>
+    </div>
+
+  <script src="js/script.js"></script>
+
+</body>
+</html>

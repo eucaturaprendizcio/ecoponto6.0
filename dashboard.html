@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPonto - Dashboard</title>
+    <style>
+        /* --- ESTILO (CSS) --- */
+        :root {
+            --bg-principal: #020b05;
+            --bg-card: #06180b;
+            --verde-neon: #00ff66;
+            --verde-escuro: #021408;
+            --texto-principal: #ffffff;
+            --texto-secundario: #8a99ad;
+            --borda: rgba(0, 255, 102, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-principal);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Barra Lateral */
+        sidebar {
+            width: 260px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--borda);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--verde-neon);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-item a {
+            color: var(--texto-secundario);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: block;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item.active a, .menu-item a:hover {
+            color: var(--verde-neon);
+            background-color: var(--verde-escuro);
+            border-left: 3px solid var(--verde-neon);
+        }
+
+        .btn-logout {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid #ff3333;
+            color: #ff3333;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background-color: #400c0c;
+        }
+
+        /* Conteúdo Principal */
+        main {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            overflow-y: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--borda);
+            padding-bottom: 15px;
+        }
+
+        header h1 {
+            font-size: 26px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-online {
+            background: var(--verde-escuro);
+            color: var(--verde-neon);
+            border: 1px solid var(--verde-neon);
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* Grid de Cards Analíticos */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--borda);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-title {
+            color: var(--texto-secundario);
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--verde-neon);
+        }
+
+        /* Tabela de Dados (Monitoramento tático) */
+        .table-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .table-container h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--verde-neon);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--texto-secundario);
+            border-bottom: 1px solid var(--borda);
+            padding: 12px 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 14px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 15px;
+        }
+
+        tr:hover td {
+            background-color: rgba(0, 255, 102, 0.02);
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-ativo { background-color: var(--verde-neon); }
+        .status-pendente { background-color: #ffcc00; }
+    </style>
+</head>
+<body>
+
+    <sidebar>
+        <div class="brand">
+            <span>🌿</span> EcoPonto
+        </div>
+        <ul class="menu-list">
+            <li class="menu-item active"><a href="#">Visão Geral</a></li>
+            <li class="menu-item"><a href="#">Portais & Acessos</a></li>
+            <li class="menu-item"><a href="#">Relatórios</a></li>
+            <li class="menu-item"><a href="#">Configurações</a></li>
+        </ul>
+        <button class="btn-logout" onclick="logout()">Desconectar</button>
+    </sidebar>
+
+    <main>
+        <header>
+            <div>
+                <h1>Painel de Controle</h1>
+                <p style="color: var(--texto-secundario); font-size: 14px;">Bem-vindo ao centro tático operacional.</p>
+            </div>
+            <div class="user-profile">
+                <span id="txtUser">Usuário Autenticado</span>
+                <span class="badge-online">SISTEMA ATIVO</span>
+            </div>
+        </header>
+
+        <section class="cards-grid">
+            <div class="card">
+                <span class="card-title">Motoristas Conectados</span>
+                <span class="card-value" id="cardMotoristas">18</span>
+            </div>
+            <div class="card">
+                <span class="card-title">Acessos Corporativos</span>
+                <span class="card-value" id="cardCorp">5</span>
+            </div>
+            <div class="card">
+                <span class="card-title">Requisições Solicitadas</span>
+                <span class="card-value">142</span>
+            </div>
+            <div class="card">
+                <span class="card-title">Taxa de Sucesso</span>
+                <span class="card-value" style="color: #ffffff;">99.4%</span>
+            </div>
+        </section>
+
+        <section class="table-container">
+            <h2>Últimas Autenticações Registradas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuário / ID</th>
+                        <th>Ambiente</th>
+                        <th>Horário</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableLogs">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        // --- LÓGICA (JAVASCRIPT) ---
+
+        // Executa assim que a página carrega
+        document.addEventListener("DOMContentLoaded", () => {
+            carregarDadosIniciais();
+        });
+
+        function carregarDadosIniciais() {
+            // Simulando carregamento de logs operacionais sem gerar alertas visuais na tela
+            const logsSimulados = [
+                { id: "JOSESILVA", ambiente: "Operacional (Motorista)", hora: "14:32", status: "ativo" },
+                { id: "admin.corporativo", ambiente: "Portal Corporativo", hora: "14:15", status: "ativo" },
+                { id: "ANACONCEICAO", ambiente: "Operacional (Motorista)", hora: "13:58", status: "ativo" },
+                { id: "suporte.eco", ambiente: "Portal Corporativo", hora: "13:02", status: "pendente" }
+            ];
+
+            const tabela = document.getElementById("tableLogs");
+            tabela.innerHTML = ""; // Limpa estrutura anterior
+
+            logsSimulados.forEach(log => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${log.id}</strong></td>
+                    <td>${log.ambiente}</td>
+                    <td>${log.hora}</td>
+                    <td>
+                        <span class="status-dot status-${log.status}"></span>
+                        ${log.status === 'ativo' ? 'Autorizado' : 'Aguardando'}
+                    </td>
+                `;
+                tabela.appendChild(tr);
+            });
+
+            // Exemplo de manipulação dinâmica de números nos cards
+            document.getElementById("cardMotoristas").innerText = "24";
+            document.getElementById("cardCorp").innerText = "7";
+        }
+
+        function logout() {
+            // Remove as sessões se houver e volta para a tela de login
+            window.location.href = "index.html"; 
+        }
+    </script>
+</body>
+</html>
